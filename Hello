@@ -1,1 +1,43 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
+class Program
+{
+    static void Main()
+    {
+        // Set up the ChromeDriver
+        IWebDriver driver = new ChromeDriver();
+
+        // Navigate to eBay website
+        driver.Navigate().GoToUrl("https://www.ebay.com/");
+
+        // Find the search input element by its name attribute value
+        IWebElement searchBox = driver.FindElement(By.Name("_nkw"));
+
+        // Enter the search query
+        searchBox.SendKeys("laptop");
+
+        // Find the search button and click on it
+        IWebElement searchButton = driver.FindElement(By.Id("gh-btn"));
+        searchButton.Click();
+
+        // Wait for the search results page to load (you may need to adjust the wait time)
+        System.Threading.Thread.Sleep(3000);
+
+        // Capture the current URL to check if the search was successful
+        string currentUrl = driver.Url;
+
+        // Verify if the search results page is displayed
+        if (currentUrl.Contains("/sch/i.html"))
+        {
+            Console.WriteLine("Search successful. Test Passed!");
+        }
+        else
+        {
+            Console.WriteLine("Search failed. Test Failed!");
+        }
+
+        // Close the browser
+        driver.Quit();
+    }
+}
