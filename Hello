@@ -1,7 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-class Program
+class ikare
 {
     static void Main()
     {
@@ -9,29 +9,23 @@ class Program
         IWebDriver driver = new ChromeDriver();
 
         // Navigate to the login page
-        driver.Navigate().GoToUrl("your_login_page_url");
+        driver.Navigate().GoToUrl("https://ikareng.es.ad.adp.com/dashboard");
 
         // Find the username and password fields, and the login button
-        IWebElement usernameInput = driver.FindElement(By.Id("username"));
-        IWebElement passwordInput = driver.FindElement(By.Id("password"));
-        IWebElement loginButton = driver.FindElement(By.Id("loginButton"));
+        IWebElement usernameInput = driver.FindElement(By.Id("i0116"));
+        usernameInput.SendKeys("nihal.sinha@adp.com");
+        IWebElement usernameInputnextbutton = driver.FindElement(By.Id("idSIButton9"));
+        Thread.Sleep(1000);
+        usernameInputnextbutton.Click();
+        
+        IWebElement passwordInput = driver.FindElement(By.Id("i0118"));
+        passwordInput.SendKeys("hello@123");
+        IWebElement passwordInputsubmitbutton = driver.FindElement(By.Id("idSIButton9"));
+        Thread.Sleep(1000);
+        passwordInputsubmitbutton.Click();
+        Thread.Sleep(500);
 
-        // Provide login credentials
-        usernameInput.SendKeys("your_username");
-        passwordInput.SendKeys("your_password");
-
-        // Click the login button
-        loginButton.Click();
-
-        // Wait for the login to complete (you may need to customize the wait condition)
-        // For example, you can use WebDriverWait to wait for a specific element on the dashboard
-        // WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        // wait.Until(ExpectedConditions.ElementIsVisible(By.Id("dashboardElement")));
-
-        // Now, you should be on the dashboard
-        // You can perform further actions on the dashboard as needed
-
-        // Close the browser
+   
         driver.Quit();
     }
 }
