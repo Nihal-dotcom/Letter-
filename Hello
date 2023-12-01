@@ -10,20 +10,21 @@ class ikare
         IWebDriver driver = new ChromeDriver();
         driver.Navigate().GoToUrl("https://ikareng.es.ad.adp.com/dashboard");
 
-        // Find the username field
-        IWebElement usernameInput = driver.FindElement(By.Id("i0116"));
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+
+        // Wait for the username input field to be clickable
+        IWebElement usernameInput = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("i0116")));
         usernameInput.SendKeys("nihal.sinha@adp.com");
 
         // Find and click the "Next" button after entering the username
         IWebElement usernameInputNextButton = driver.FindElement(By.Id("idSIButton9"));
         usernameInputNextButton.Click();
 
-        // Find the password field
-        IWebElement passwordInput = driver.FindElement(By.Id("i0118"));
+        // Wait for the password input field to be clickable
+        IWebElement passwordInput = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("i0118")));
         passwordInput.SendKeys("hello@123");
 
         // Use WebDriverWait to wait for the "Submit" button and click it
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         IWebElement passwordInputSubmitButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("idSIButton9")));
         passwordInputSubmitButton.Click();
 
