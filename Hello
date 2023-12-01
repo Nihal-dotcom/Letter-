@@ -1,31 +1,35 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 class ikare
 {
     static void Main()
     {
-        // Set up the WebDriver (ensure you have the ChromeDriver executable in your path)
         IWebDriver driver = new ChromeDriver();
-
-        // Navigate to the login page
         driver.Navigate().GoToUrl("https://ikareng.es.ad.adp.com/dashboard");
 
-        // Find the username and password fields, and the login button
+        // Find the username field
         IWebElement usernameInput = driver.FindElement(By.Id("i0116"));
         usernameInput.SendKeys("nihal.sinha@adp.com");
-        IWebElement usernameInputnextbutton = driver.FindElement(By.Id("idSIButton9"));
-        Thread.Sleep(1000);
-        usernameInputnextbutton.Click();
-        
+
+        // Find and click the "Next" button after entering the username
+        IWebElement usernameInputNextButton = driver.FindElement(By.Id("idSIButton9"));
+        usernameInputNextButton.Click();
+
+        // Find the password field
         IWebElement passwordInput = driver.FindElement(By.Id("i0118"));
         passwordInput.SendKeys("hello@123");
-        IWebElement passwordInputsubmitbutton = driver.FindElement(By.Id("idSIButton9"));
-        Thread.Sleep(1000);
-        passwordInputsubmitbutton.Click();
-        Thread.Sleep(500);
 
-   
+        // Use WebDriverWait to wait for the "Submit" button and click it
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        IWebElement passwordInputSubmitButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("idSIButton9")));
+        passwordInputSubmitButton.Click();
+
+        // Add a sleep or WebDriverWait for any additional actions after login if needed
+        // For example: wait.Until(ExpectedConditions.ElementIsVisible(By.Id("dashboardElement")));
+
         driver.Quit();
     }
 }
