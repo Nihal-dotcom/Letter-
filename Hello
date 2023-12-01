@@ -5,37 +5,31 @@ class Program
 {
     static void Main()
     {
-        // Set up the ChromeDriver
+        // Set up the WebDriver (ensure you have the ChromeDriver executable in your path)
         IWebDriver driver = new ChromeDriver();
 
-        // Navigate to eBay website
-        driver.Navigate().GoToUrl("https://www.ebay.com/");
+        // Navigate to the login page
+        driver.Navigate().GoToUrl("your_login_page_url");
 
-        // Find the search input element by its name attribute value
-        IWebElement searchBox = driver.FindElement(By.Name("_nkw"));
+        // Find the username and password fields, and the login button
+        IWebElement usernameInput = driver.FindElement(By.Id("username"));
+        IWebElement passwordInput = driver.FindElement(By.Id("password"));
+        IWebElement loginButton = driver.FindElement(By.Id("loginButton"));
 
-        // Enter the search query
-        searchBox.SendKeys("laptop");
+        // Provide login credentials
+        usernameInput.SendKeys("your_username");
+        passwordInput.SendKeys("your_password");
 
-        // Find the search button and click on it
-        IWebElement searchButton = driver.FindElement(By.Id("gh-btn"));
-        searchButton.Click();
+        // Click the login button
+        loginButton.Click();
 
-        // Wait for the search results page to load (you may need to adjust the wait time)
-        System.Threading.Thread.Sleep(3000);
+        // Wait for the login to complete (you may need to customize the wait condition)
+        // For example, you can use WebDriverWait to wait for a specific element on the dashboard
+        // WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        // wait.Until(ExpectedConditions.ElementIsVisible(By.Id("dashboardElement")));
 
-        // Capture the current URL to check if the search was successful
-        string currentUrl = driver.Url;
-
-        // Verify if the search results page is displayed
-        if (currentUrl.Contains("/sch/i.html"))
-        {
-            Console.WriteLine("Search successful. Test Passed!");
-        }
-        else
-        {
-            Console.WriteLine("Search failed. Test Failed!");
-        }
+        // Now, you should be on the dashboard
+        // You can perform further actions on the dashboard as needed
 
         // Close the browser
         driver.Quit();
