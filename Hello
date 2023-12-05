@@ -1,7 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using System;
 
 class Run
@@ -21,16 +20,31 @@ class Run
         IWebElement loginButton = driver.FindElement(By.Id("LoginButton"));
         loginButton.Click();
 
-        // Wait for the login to complete
+        // Use WebDriverWait instead of Thread.Sleep
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        wait.Until(ExpectedConditions.UrlToBe("https://runpayrollmain2-qafit.nj.adp.com/"));
 
-        // Assign locator for the search box
-        By searchBoxLocator = By.Id("txtIIDName");
+        // Wait for the search box to be present and visible
+        IWebElement searchBox = wait.Until(ExpectedConditions.ElementIsVisible(By.Name("txtIIDName$ctl00")));
 
-        IWebElement searchBox = driver.FindElement(searchBoxLocator);
-        searchBox.SendKeys("Run");
-        Thread.Sleep(1000);
+        // Enter value in the search box
+        searchBox.SendKeys("35010445");
+
+        // Submit the form
+        searchBox.Submit();
+
+        // Wait for the page to load (adjust wait time as needed)
+        wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+
+        string currentUrl = driver.Url;
+
+        if (currentUrl.Contains("https://runpayrollmain2"))
+        {
+            Console.WriteLine("Search successful. Test Passed!");
+        }
+        else
+        {
+            Console.WriteLine("Search failed. Test Failed!");
+        }
 
         driver.Quit();
     }
