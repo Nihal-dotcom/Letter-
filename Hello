@@ -22,22 +22,16 @@ class Run
         loginButton.Click();
 
         // Wait for the login to complete
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         wait.Until(ExpectedConditions.UrlToBe("https://runpayrollmain2-qafit.nj.adp.com/"));
 
         // Assign locator for the search box
-        By searchBoxLocator = By.XPath("//*[@id=\"helpSearch\"]/input");
-
-        // Wait for the search box to be visible
-        wait.Until(ExpectedConditions.ElementIsVisible(searchBoxLocator));
+        By searchBoxLocator = By.Id("txtIIDName");
 
         IWebElement searchBox = driver.FindElement(searchBoxLocator);
         searchBox.SendKeys("Run");
-        searchBox.Submit();
+        Thread.Sleep(1000);
 
-        // Perform other actions as needed
-
-        // Close the browser
         driver.Quit();
     }
 }
