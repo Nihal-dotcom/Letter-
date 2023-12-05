@@ -1,22 +1,55 @@
-// Wait for the login to complete (adjust wait time as needed)
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        wait.Until(ExpectedConditions.UrlToBe("https://example.com/dashboard"));  // Change the expected URL after successful login
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
-        // Click on the menu after successful login
-        IWebElement menuElement = wait.Until(ExpectedConditions.ElementIsVisible(menuLocator));
-        menuElement.Click();
+class Run
+{
+   
+
+    static void Main()
+    {
+        IWebElement  menuLocator;
+        IWebElement searchBoxLocator;
+        IWebDriver driver = new ChromeDriver();
+
+
+        driver.Navigate().GoToUrl("https://runpayroll-qafit.es.ad.adp.com/@836D254C-789B-41B8-8052-D48A639E95D8/admin/login.aspx");
+
+
+
+        IWebElement usernameInput = driver.FindElement(By.Id("txtUsername"));
+        usernameInput.SendKeys("NSinha@adp");
+        Thread.Sleep(500);
+
+        IWebElement passwordInput = driver.FindElement(By.Id("txtPassword"));
+        passwordInput.SendKeys("Loveyoumummy123#");
+        Thread.Sleep(500);
+
+        IWebElement Login = driver.FindElement(By.Id("LoginButton"));
+        Login.Click();
+        Thread.Sleep(4000);
+
+
+        
+
+        // Wait for the login to complete (adjust wait time as needed)
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+        wait.Until(ExpectedConditions.UrlToBe("https://runpayrollmain2-qafit.nj.adp.com/"));  
+
+    
 
         // Wait for the page to load and the search box to be visible (adjust wait time as needed)
         wait.Until(ExpectedConditions.ElementIsVisible(searchBoxLocator));
 
-        // Find the search box, enter the search value, and submit the form
-        IWebElement searchBox = driver.FindElement(searchBoxLocator);
-        searchBox.SendKeys(searchValue);
+       
+        IWebElement searchBox = driver.FindElement(By.XPath("//*[@id=\"helpSearch\"]/input"));
+        searchBox.SendKeys("Run");
         searchBox.Submit();
+        Thread.Sleep(500);
 
-        // Perform further actions as needed
-
-        // Close the browser window
+        
         driver.Quit();
     }
 }
+
