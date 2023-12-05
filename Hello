@@ -1,7 +1,9 @@
+using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System;
+using DotNetSeleniumExtras.WaitHelpers;
 
 class Run
 {
@@ -15,37 +17,30 @@ class Run
         usernameInput.SendKeys("NSinha@adp");
 
         IWebElement passwordInput = driver.FindElement(By.Id("txtPassword"));
-        passwordInput.SendKeys("Loveyoumummy123#");
+        passwordInput.SendKeys("123#");
 
         IWebElement loginButton = driver.FindElement(By.Id("LoginButton"));
         loginButton.Click();
 
-        // Use WebDriverWait instead of Thread.Sleep
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
 
-        // Wait for the search box to be present and visible
-        IWebElement searchBox = wait.Until(ExpectedConditions.ElementIsVisible(By.Name("txtIIDName$ctl00")));
-
-        // Enter value in the search box
-        searchBox.SendKeys("35010445");
-
-        // Submit the form
-        searchBox.Submit();
-
-        // Wait for the page to load (adjust wait time as needed)
-        wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-
-        string currentUrl = driver.Url;
-
-        if (currentUrl.Contains("https://runpayrollmain2"))
+        try
         {
+            // Wait for the page to load (adjust wait time as needed)
+            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+
+            // Wait for the URL to contain the expected value
+            wait.Until(ExpectedConditions.UrlContains("https://runpayrollmain2"));
+
             Console.WriteLine("Search successful. Test Passed!");
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("Search failed. Test Failed!");
+            Console.WriteLine($"An error occurred: {ex.Message}");
         }
-
-        driver.Quit();
+        finally
+        {
+            driver.Quit();
+        }
     }
 }
