@@ -2,54 +2,42 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System;
 
 class Run
 {
-   
-
     static void Main()
     {
-        IWebElement  menuLocator;
-        IWebElement searchBoxLocator;
         IWebDriver driver = new ChromeDriver();
-
 
         driver.Navigate().GoToUrl("https://runpayroll-qafit.es.ad.adp.com/@836D254C-789B-41B8-8052-D48A639E95D8/admin/login.aspx");
 
-
-
         IWebElement usernameInput = driver.FindElement(By.Id("txtUsername"));
         usernameInput.SendKeys("NSinha@adp");
-        Thread.Sleep(500);
 
         IWebElement passwordInput = driver.FindElement(By.Id("txtPassword"));
         passwordInput.SendKeys("Loveyoumummy123#");
-        Thread.Sleep(500);
 
-        IWebElement Login = driver.FindElement(By.Id("LoginButton"));
-        Login.Click();
-        Thread.Sleep(4000);
+        IWebElement loginButton = driver.FindElement(By.Id("LoginButton"));
+        loginButton.Click();
 
-
-        
-
-        // Wait for the login to complete (adjust wait time as needed)
+        // Wait for the login to complete
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-        wait.Until(ExpectedConditions.UrlToBe("https://runpayrollmain2-qafit.nj.adp.com/"));  
+        wait.Until(ExpectedConditions.UrlToBe("https://runpayrollmain2-qafit.nj.adp.com/"));
 
-    
+        // Assign locator for the search box
+        By searchBoxLocator = By.XPath("//*[@id=\"helpSearch\"]/input");
 
-        // Wait for the page to load and the search box to be visible (adjust wait time as needed)
+        // Wait for the search box to be visible
         wait.Until(ExpectedConditions.ElementIsVisible(searchBoxLocator));
 
-       
-        IWebElement searchBox = driver.FindElement(By.XPath("//*[@id=\"helpSearch\"]/input"));
+        IWebElement searchBox = driver.FindElement(searchBoxLocator);
         searchBox.SendKeys("Run");
         searchBox.Submit();
-        Thread.Sleep(500);
 
-        
+        // Perform other actions as needed
+
+        // Close the browser
         driver.Quit();
     }
 }
-
